@@ -1,6 +1,7 @@
 # Ms-SQL-Roll-Use-Monthly-Partitions-Helper
 
 ```TSQL
+
 --单元测试
 --重建分区表
 --exec zsp_CreateSampleTable
@@ -12,4 +13,7 @@ exec [zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]
 exec [zsp_TablesPartitionsInfoQuery]
 --查询Sample表分区中数据
 --exec zsp_SampleMonthlyDataPartitionsInfoQuery
+--获取日期所在分区编号
+--select dbo.SCF_GetMonthlyPartitionNo('Test_Monthly', '2026-01-01')
+
 ```
