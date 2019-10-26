@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [MonthlyPartitionsTest]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  Database [MonthlyPartitionsTest]    Script Date: 10/26/2019 8:14:26 PM ******/
 CREATE DATABASE [MonthlyPartitionsTest]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -129,13 +129,81 @@ ALTER DATABASE [MonthlyPartitionsTest] SET QUERY_STORE = OFF
 GO
 USE [MonthlyPartitionsTest]
 GO
-/****** Object:  PartitionFunction [UPF_Test_Monthly]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  PartitionFunction [UPF_Test_Monthly]    Script Date: 10/26/2019 8:14:26 PM ******/
 CREATE PARTITION FUNCTION [UPF_Test_Monthly](date) AS RANGE RIGHT FOR VALUES (N'2025-11-01T00:00:00.000', N'2025-12-01T00:00:00.000', N'2026-01-01T00:00:00.000', N'2026-02-01T00:00:00.000', N'2026-03-01T00:00:00.000', N'2026-04-01T00:00:00.000', N'2026-05-01T00:00:00.000', N'2026-06-01T00:00:00.000', N'2026-07-01T00:00:00.000', N'2026-08-01T00:00:00.000', N'2026-09-01T00:00:00.000', N'2026-10-01T00:00:00.000', N'2026-11-01T00:00:00.000', N'2026-12-01T00:00:00.000', N'2027-01-01T00:00:00.000', N'2027-02-01T00:00:00.000', N'2027-03-01T00:00:00.000', N'2027-04-01T00:00:00.000', N'2027-05-01T00:00:00.000', N'2027-06-01T00:00:00.000', N'2027-07-01T00:00:00.000', N'2027-08-01T00:00:00.000', N'2027-09-01T00:00:00.000', N'2027-10-01T00:00:00.000')
 GO
-/****** Object:  PartitionScheme [UPS_Test_Monthly]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  PartitionScheme [UPS_Test_Monthly]    Script Date: 10/26/2019 8:14:26 PM ******/
 CREATE PARTITION SCHEME [UPS_Test_Monthly] AS PARTITION [UPF_Test_Monthly] TO ([FG_Test_Monthly_Y00M00], [FG_Test_Monthly_Y02M11], [FG_Test_Monthly_Y02M12], [FG_Test_Monthly_Y01M01], [FG_Test_Monthly_Y01M02], [FG_Test_Monthly_Y01M03], [FG_Test_Monthly_Y01M04], [FG_Test_Monthly_Y01M05], [FG_Test_Monthly_Y01M06], [FG_Test_Monthly_Y01M07], [FG_Test_Monthly_Y01M08], [FG_Test_Monthly_Y01M09], [FG_Test_Monthly_Y01M10], [FG_Test_Monthly_Y01M11], [FG_Test_Monthly_Y01M12], [FG_Test_Monthly_Y02M01], [FG_Test_Monthly_Y02M02], [FG_Test_Monthly_Y02M03], [FG_Test_Monthly_Y02M04], [FG_Test_Monthly_Y02M05], [FG_Test_Monthly_Y02M06], [FG_Test_Monthly_Y02M07], [FG_Test_Monthly_Y02M08], [FG_Test_Monthly_Y02M09], [FG_Test_Monthly_Y02M10])
 GO
-/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsInfo]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[SCF_GetMonthlyPartitionNo]    Script Date: 10/26/2019 8:14:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date, ,>
+-- Description:	<Description, ,>
+-- =============================================
+CREATE FUNCTION [dbo].[SCF_GetMonthlyPartitionNo] 
+(
+	@TableName varchar(128)
+	, @MonthDate date
+)
+/*
+
+select dbo.SCF_GetMonthlyPartitionNo('Test_Monthly', '2019-01-01')
+	
+
+*/
+
+RETURNS int
+AS
+BEGIN
+	-- Declare the return variable here
+	--declare @MonthFirstDate date
+	--set @MonthFirstDate = dateadd(MONTH, DATEDIFF(MONTH,0,@MonthDate),0)
+	--declare @NextMonthFirstDate date
+	--set @NextMonthFirstDate = dateadd(MONTH, 1, @MonthFirstDate)
+
+	declare @ int = -1
+	;with T
+	as
+	(
+		select
+			a.LeftValue
+			, a.RightValue
+			, @MonthDate		as MonthDate
+			, a.destination_id
+			, a.FileGroupName
+		from
+			iTVF_TablesPartitionsInfo(@TableName) a
+		where
+			(
+				(a.LeftValue = a.RightValue)
+				or
+				a.LeftValue <= @MonthDate
+			)
+			and
+			(
+				(a.RightValue is null)
+				or
+				a.RightValue > @MonthDate
+			)
+		)
+	select
+		@ = a.destination_id
+	from
+		T a
+
+	return @
+
+
+
+
+END
+GO
+/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsInfo]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -462,7 +530,7 @@ where
 	)
 )
 GO
-/****** Object:  Table [dbo].[Test_Monthly]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  Table [dbo].[Test_Monthly]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -471,7 +539,7 @@ CREATE TABLE [dbo].[Test_Monthly](
 	[DataDate] [date] NULL
 ) ON [UPS_Test_Monthly]([DataDate])
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_CreateSampleTable]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_CreateSampleTable]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +623,7 @@ create Table Test_Monthly
 on ups_test_monthly(datadate)
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -575,6 +643,8 @@ exec [zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]
 exec [zsp_TablesPartitionsInfoQuery]
 --查询Sample表分区中数据
 --exec zsp_SampleMonthlyDataPartitionsInfoQuery
+--获取日期所在分区编号
+--select dbo.SCF_GetMonthlyPartitionNo('Test_Monthly', '2026-01-01')
 */
 
 begin
@@ -707,7 +777,7 @@ commit transaction
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_SampleMonthlyDataPartitionsInfoQuery]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_SampleMonthlyDataPartitionsInfoQuery]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -727,7 +797,7 @@ ORDER BY [Partition Number]
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsInfoQuery]    Script Date: 10/26/2019 3:17:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsInfoQuery]    Script Date: 10/26/2019 8:14:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
