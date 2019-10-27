@@ -126,7 +126,8 @@ exec (@sql)
 
 set @SqlTemplate = N'
 ALTER PARTITION FUNCTION upf_%s()  
-split RANGE (''%s'');'
+split RANGE (''%s'')
+'
 
 set @Sql = FORMATMESSAGE
 				(
