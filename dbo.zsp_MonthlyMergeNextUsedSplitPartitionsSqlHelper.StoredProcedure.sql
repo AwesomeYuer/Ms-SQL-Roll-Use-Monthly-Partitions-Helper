@@ -1,78 +1,157 @@
-﻿USE [MonthlyPartitionsTest]਍䜀伀ഀഀ
-/****** Object:  StoredProcedure [dbo].[zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]    Script Date: 10/26/2019 9:19:44 PM ******/਍匀䔀吀 䄀一匀䤀开一唀䰀䰀匀 伀一ഀഀ
-GO਍匀䔀吀 儀唀伀吀䔀䐀开䤀䐀䔀一吀䤀䘀䤀䔀刀 伀一ഀഀ
-GO਍䌀刀䔀䄀吀䔀 瀀爀漀挀 嬀搀戀漀崀⸀嬀稀猀瀀开䴀漀渀琀栀氀礀䴀攀爀最攀一攀砀琀唀猀攀搀匀瀀氀椀琀倀愀爀琀椀琀椀漀渀猀匀焀氀䠀攀氀瀀攀爀崀ഀഀ
-@TableNameWithout_Monthly nvarchar(128) = N'Test'਍愀猀ഀഀ
-/*਍ⴀⴀ唀䍓䭑항උഀ
---重建分区表਍ⴀⴀ攀砀攀挀 稀猀瀀开䌀爀攀愀琀攀匀愀洀瀀氀攀吀愀戀氀攀ഀഀ
---滚动1次分区之前਍攀砀攀挀 嬀稀猀瀀开吀愀戀氀攀猀倀愀爀琀椀琀椀漀渀猀䤀渀昀漀儀甀攀爀礀崀ഀഀ
---滚动1次分区਍攀砀攀挀 嬀稀猀瀀开䴀漀渀琀栀氀礀䴀攀爀最攀一攀砀琀唀猀攀搀匀瀀氀椀琀倀愀爀琀椀琀椀漀渀猀匀焀氀䠀攀氀瀀攀爀崀ഀഀ
---滚动1次分区之后਍攀砀攀挀 嬀稀猀瀀开吀愀戀氀攀猀倀愀爀琀椀琀椀漀渀猀䤀渀昀漀儀甀攀爀礀崀ഀഀ
---查询Sample表分区中数据਍ⴀⴀ攀砀攀挀 稀猀瀀开匀愀洀瀀氀攀䴀漀渀琀栀氀礀䐀愀琀愀倀愀爀琀椀琀椀漀渀猀䤀渀昀漀儀甀攀爀礀ഀഀ
---获取日期所在分区编号਍ⴀⴀ猀攀氀攀挀琀 搀戀漀⸀匀䌀䘀开䜀攀琀䴀漀渀琀栀氀礀倀愀爀琀椀琀椀漀渀一漀⠀✀吀攀猀琀开䴀漀渀琀栀氀礀✀Ⰰ ✀㈀　㈀㘀ⴀ　㄀ⴀ　㄀✀⤀ഀഀ
-*/਍ഀഀ
-begin਍ഀഀ
-set xact_abort on਍戀攀最椀渀 琀爀愀渀猀愀挀琀椀漀渀ഀഀ
-declare @MergeDate date਍搀攀挀氀愀爀攀 䀀匀瀀氀椀琀䐀愀琀攀 搀愀琀攀ഀഀ
-declare @Years int਍ഀഀ
-declare @TableName nvarchar(128) = @TableNameWithout_Monthly + N'_Monthly'਍ഀഀ
-;WITH T਍䄀匀ഀഀ
-(਍ऀ猀攀氀攀挀琀ഀഀ
-		*਍ऀ昀爀漀洀ഀഀ
-		iTVF_TablesPartitionsInfo(@TableName) a਍⤀ഀഀ
-SELECT ਍ऀⴀⴀ瘀㄀ഀഀ
-	@MergeDate		= cast(min(a.LeftValue) as date) --as [Merge]਍ऀⰀ 䀀匀瀀氀椀琀䐀愀琀攀ऀ㴀 挀愀猀琀⠀洀愀砀⠀愀⸀䰀攀昀琀嘀愀氀甀攀⤀ 愀猀 搀愀琀攀⤀ ⴀⴀ愀猀 嬀匀瀀氀椀琀崀ഀഀ
-	, @Years		= (count(1) - 1)/12਍䘀刀伀䴀ഀഀ
-	T a਍眀栀攀爀攀ഀഀ
-	a.TableName = @TableName਍ⴀⴀ伀刀䐀䔀刀 䈀夀 刀漀眀䤀䐀ഀഀ
-਍ഀഀ
-select਍ऀ䀀䴀攀爀最攀䐀愀琀攀ऀऀऀऀ愀猀 䠀攀愀搀䴀攀爀最攀䐀愀琀攀ഀഀ
-	, @SplitDate			as TailSplitDate਍ऀⰀ 䐀䄀吀䔀䐀䤀䘀䘀⠀䴀伀一吀䠀Ⰰ䀀䴀攀爀最攀䐀愀琀攀Ⰰ䀀匀瀀氀椀琀䐀愀琀攀⤀ऀ愀猀 䴀漀渀琀栀猀ഀഀ
-਍ⴀⴀ㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀ഀഀ
-਍搀攀挀氀愀爀攀 䀀匀焀氀吀攀洀瀀氀愀琀攀 渀瘀愀爀挀栀愀爀⠀洀愀砀⤀ഀഀ
-declare @Sql nvarchar(max)਍ഀഀ
-਍ⴀⴀ㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀ഀഀ
-set @SqlTemplate = N'਍琀爀甀渀挀愀琀攀 琀愀戀氀攀 ─猀 圀䤀吀䠀 ⠀倀䄀刀吀䤀吀䤀伀一匀 ⠀㄀⤀⤀㬀✀ഀഀ
-set @Sql = FORMATMESSAGE਍ऀऀऀऀ⠀ഀഀ
-					@SqlTemplate਍ऀऀऀऀऀⰀ 䀀吀愀戀氀攀一愀洀攀ഀഀ
-				)਍ഀഀ
-print @sql਍攀砀攀挀 ⠀䀀猀焀氀⤀ഀഀ
-਍ⴀⴀ㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀ഀഀ
-਍猀攀琀 䀀匀焀氀吀攀洀瀀氀愀琀攀 㴀 一✀ഀഀ
-ALTER PARTITION FUNCTION upf_%s()  ਍洀攀爀最攀 刀䄀一䜀䔀 ⠀✀✀─猀✀✀⤀ഀഀ
-'਍猀攀琀 䀀匀焀氀 㴀 䘀伀刀䴀䄀吀䴀䔀匀匀䄀䜀䔀ഀഀ
-				(਍ऀऀऀऀऀ䀀匀焀氀吀攀洀瀀氀愀琀攀ഀഀ
-					, @TableName਍ऀऀऀऀऀⰀ 挀愀猀琀⠀䀀䴀攀爀最攀䐀愀琀攀 愀猀 渀瘀愀爀挀栀愀爀⠀㄀　⤀⤀ഀഀ
-				)਍ഀഀ
-print @sql਍攀砀攀挀 ⠀䀀猀焀氀⤀ഀഀ
-਍ⴀⴀ㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀ഀഀ
-਍搀攀挀氀愀爀攀 䀀匀瀀氀椀琀夀攀愀爀䤀䐀 椀渀琀ഀഀ
-set @SplitDate = DATEADD(month, 1, @SplitDate)਍猀攀琀 䀀匀瀀氀椀琀夀攀愀爀䤀䐀 㴀 ㄀ ⬀ 夀攀愀爀⠀䀀匀瀀氀椀琀䐀愀琀攀⤀ ─ 䀀夀攀愀爀猀ഀഀ
-declare @SplitMonth int਍猀攀琀 䀀匀瀀氀椀琀䴀漀渀琀栀 㴀 䴀漀渀琀栀⠀䀀匀瀀氀椀琀䐀愀琀攀⤀ ഀഀ
-਍猀攀琀 䀀匀焀氀吀攀洀瀀氀愀琀攀 㴀 一✀ഀഀ
-ALTER PARTITION scheme ups_%s਍渀攀砀琀 甀猀攀搀 䘀䜀开─猀开─猀ഀഀ
-'਍ഀഀ
-set @Sql = FORMATMESSAGE਍ऀऀऀ⠀ഀഀ
-				@SqlTemplate਍ऀऀऀऀⰀ 䀀吀愀戀氀攀一愀洀攀ഀഀ
-				, @TableName਍ऀऀऀऀⰀഀഀ
-					'Y' ਍ऀऀऀऀऀ⬀ 爀椀最栀琀⠀✀　✀ ⬀ 挀愀猀琀⠀䀀匀瀀氀椀琀夀攀愀爀䤀䐀 愀猀 瘀愀爀挀栀愀爀⠀㈀⤀⤀Ⰰ㈀⤀ഀഀ
-					+ 'M'਍ऀऀऀऀऀ⬀ 爀椀最栀琀⠀✀　✀ ⬀ 挀愀猀琀⠀䀀匀瀀氀椀琀䴀漀渀琀栀 愀猀 瘀愀爀挀栀愀爀⠀㈀⤀⤀Ⰰ㈀⤀ഀഀ
-			)਍瀀爀椀渀琀 䀀猀焀氀ഀഀ
-exec (@sql)਍ഀഀ
---=====================================================================਍ഀഀ
-set @SqlTemplate = N'਍䄀䰀吀䔀刀 倀䄀刀吀䤀吀䤀伀一 䘀唀一䌀吀䤀伀一 甀瀀昀开─猀⠀⤀  ഀഀ
-split RANGE (''%s'');'਍ഀഀ
-set @Sql = FORMATMESSAGE਍ऀऀऀऀ⠀ഀഀ
-					@SqlTemplate਍ऀऀऀऀऀⰀ 䀀吀愀戀氀攀一愀洀攀ഀഀ
-					, cast(@SplitDate as nvarchar(10))਍ऀऀऀऀ⤀ഀഀ
-print @sql਍攀砀攀挀 ⠀䀀猀焀氀⤀ഀഀ
-਍ⴀⴀ㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀㴀ഀഀ
-commit transaction਍ഀഀ
---exec (@sql)਍ഀഀ
-਍ഀഀ
---ALTER PARTITION scheme ups_monthly ()  ਍ⴀⴀ渀攀砀琀 甀猀攀搀 㬀ഀഀ
-਍ⴀⴀ䄀䰀吀䔀刀 倀䄀刀吀䤀吀䤀伀一 䘀唀一䌀吀䤀伀一 甀瀀昀开洀漀渀琀栀氀礀 ⠀⤀  ഀഀ
---split RANGE (@);਍ഀഀ
---ALTER PARTITION FUNCTION upf_monthly ()  ਍ⴀⴀ洀攀爀最攀 刀䄀一䜀䔀 ⠀✀㈀　㄀㤀ⴀ　㈀ⴀ　㄀✀⤀㬀ഀഀ
-਍攀渀搀ഀഀ
-਍䜀伀ഀഀ
+﻿USE [MonthlyPartitionsTest]
+GO
+/****** Object:  StoredProcedure [dbo].[zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]    Script Date: 10/28/2019 12:26:11 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER proc [dbo].[zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]
+@TableNameWithout_Monthly nvarchar(128) = N'Test'
+as
+/*
+--单元测试
+--重建分区表
+--exec zsp_CreateSampleTable
+--生成测试数据
+--exec zsp_GenerateSampleMonthlyData '2012-6-2', 30
+--滚动1次分区之前
+--exec [zsp_TablesPartitionsInfoQuery]
+--滚动1次分区
+exec [zsp_MonthlyMergeNextUsedSplitPartitionsSqlHelper]
+--滚动1次分区之后
+--exec [zsp_TablesPartitionsInfoQuery]
+--查询Sample表分区中数据
+exec zsp_SampleMonthlyDataPartitionsInfoQuery
+--获取日期所在分区编号
+--select dbo.SCF_GetMonthlyPartitionNo('Test_Monthly', '2026-01-01')
+*/
+
+begin
+
+set xact_abort on
+begin transaction
+declare @MergeDate date
+declare @SplitDate date
+declare @Years int
+
+declare @TableName nvarchar(128) = @TableNameWithout_Monthly + N'_Monthly'
+
+;WITH T
+AS
+(
+	select
+		*
+	from
+		iTVF_TablesPartitionsInfo(@TableName) a
+)
+SELECT 
+	--v1
+	@MergeDate		= cast(min(a.LeftValue) as date) --as [Merge]
+	, @SplitDate	= cast(max(a.LeftValue) as date) --as [Split]
+	, @Years		= (count(1) - 1)/12
+FROM
+	T a
+where
+	a.TableName = @TableName
+--ORDER BY RowID
+
+
+select
+	@MergeDate				as HeadMergeDate
+	, @SplitDate			as TailSplitDate
+	, DATEDIFF(MONTH,@MergeDate,@SplitDate)	as Months
+
+--=====================================================================
+
+declare @SqlTemplate nvarchar(max)
+declare @Sql nvarchar(max)
+
+
+--=====================================================================
+set @SqlTemplate = N'
+truncate table %s WITH (PARTITIONS (1 to 2));'
+set @Sql = FORMATMESSAGE
+				(
+					@SqlTemplate
+					, @TableName
+				)
+
+print @sql
+exec (@sql)
+
+--=====================================================================
+
+set @SqlTemplate = N'
+ALTER PARTITION FUNCTION upf_%s()  
+merge RANGE (''%s'')
+'
+set @Sql = FORMATMESSAGE
+				(
+					@SqlTemplate
+					, @TableName
+					, cast(@MergeDate as nvarchar(10))
+				)
+
+print @sql
+exec (@sql)
+
+--=====================================================================
+
+declare @SplitYearID int
+set @SplitDate = DATEADD(month, 1, @SplitDate)
+set @SplitYearID = 1 + Year(@SplitDate) % @Years
+declare @SplitMonth int
+set @SplitMonth = Month(@SplitDate) 
+
+set @SqlTemplate = N'
+ALTER PARTITION scheme ups_%s
+next used FG_%s_%s
+'
+
+set @Sql = FORMATMESSAGE
+			(
+				@SqlTemplate
+				, @TableName
+				, @TableName
+				,
+					'Y' 
+					+ right('0' + cast(@SplitYearID as varchar(2)),2)
+					+ 'M'
+					+ right('0' + cast(@SplitMonth as varchar(2)),2)
+			)
+print @sql
+exec (@sql)
+
+--=====================================================================
+
+set @SqlTemplate = N'
+ALTER PARTITION FUNCTION upf_%s()  
+split RANGE (''%s'');'
+
+set @Sql = FORMATMESSAGE
+				(
+					@SqlTemplate
+					, @TableName
+					, cast(@SplitDate as nvarchar(10))
+				)
+print @sql
+exec (@sql)
+
+--=====================================================================
+commit transaction
+
+--exec (@sql)
+
+
+
+--ALTER PARTITION scheme ups_monthly ()  
+--next used ;
+
+--ALTER PARTITION FUNCTION upf_monthly ()  
+--split RANGE (@);
+
+--ALTER PARTITION FUNCTION upf_monthly ()  
+--merge RANGE ('2019-02-01');
+
+end
+
