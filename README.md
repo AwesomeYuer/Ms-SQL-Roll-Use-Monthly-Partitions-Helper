@@ -10,7 +10,7 @@
 --滚动1次分区之前
 --exec [zsp_TablesPartitionsInfoQuery]
 --滚动1次分区
-exec [zsp_OnDemandMonthlyMergeNextUsedSplitPartitionsSqlHelper] 'Test_Monthly', '2024-07-01'
+exec [zsp_OnDemandMonthlyTruncateMergeNextUsedSplitPartitions] 'Test_Monthly', '2024-07-01'
 --滚动1次分区之后
 --exec [zsp_TablesPartitionsInfoQuery]
 --查询Sample表分区中数据
