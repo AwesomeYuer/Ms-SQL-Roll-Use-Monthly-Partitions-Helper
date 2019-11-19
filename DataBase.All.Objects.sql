@@ -872,6 +872,7 @@ select
 	, max(a.BoundaryValue) over()			as MaxBoundaryValue
 	, count(a.BoundaryValue) over()			as CountBoundaryValue
 	, a.StorageRows
+	, sum(a.StorageRows) over()				as TotalStorageRows
 	, a.IndexID
 	, a.IndexStructure
 	, a.InRowReservedInGB
