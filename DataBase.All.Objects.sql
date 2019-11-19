@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [MonthlyPartitionsTest]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  Database [MonthlyPartitionsTest]    Script Date: 11/19/2019 10:47:45 AM ******/
 CREATE DATABASE [MonthlyPartitionsTest]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -129,13 +129,13 @@ ALTER DATABASE [MonthlyPartitionsTest] SET QUERY_STORE = OFF
 GO
 USE [MonthlyPartitionsTest]
 GO
-/****** Object:  PartitionFunction [UPF_Test_Monthly]    Script Date: 11/18/2019 10:50:45 PM ******/
-CREATE PARTITION FUNCTION [UPF_Test_Monthly](date) AS RANGE RIGHT FOR VALUES (N'2027-08-01T00:00:00.000', N'2027-09-01T00:00:00.000', N'2027-10-01T00:00:00.000', N'2027-11-01T00:00:00.000', N'2027-12-01T00:00:00.000', N'2028-01-01T00:00:00.000', N'2028-02-01T00:00:00.000', N'2028-03-01T00:00:00.000', N'2028-04-01T00:00:00.000', N'2028-05-01T00:00:00.000', N'2028-06-01T00:00:00.000', N'2028-07-01T00:00:00.000', N'2028-08-01T00:00:00.000', N'2028-09-01T00:00:00.000', N'2028-10-01T00:00:00.000', N'2028-11-01T00:00:00.000', N'2028-12-01T00:00:00.000', N'2029-01-01T00:00:00.000', N'2029-02-01T00:00:00.000', N'2029-03-01T00:00:00.000', N'2029-04-01T00:00:00.000', N'2029-05-01T00:00:00.000', N'2029-06-01T00:00:00.000', N'2029-07-01T00:00:00.000')
+/****** Object:  PartitionFunction [UPF_Test_Monthly]    Script Date: 11/19/2019 10:47:45 AM ******/
+CREATE PARTITION FUNCTION [UPF_Test_Monthly](date) AS RANGE RIGHT FOR VALUES (N'2030-09-01T00:00:00.000', N'2030-10-01T00:00:00.000', N'2030-11-01T00:00:00.000', N'2030-12-01T00:00:00.000', N'2031-01-01T00:00:00.000', N'2031-02-01T00:00:00.000', N'2031-03-01T00:00:00.000', N'2031-04-01T00:00:00.000', N'2031-05-01T00:00:00.000', N'2031-06-01T00:00:00.000', N'2031-07-01T00:00:00.000', N'2031-08-01T00:00:00.000', N'2031-09-01T00:00:00.000', N'2031-10-01T00:00:00.000', N'2031-11-01T00:00:00.000', N'2031-12-01T00:00:00.000', N'2032-01-01T00:00:00.000', N'2032-02-01T00:00:00.000', N'2032-03-01T00:00:00.000', N'2032-04-01T00:00:00.000', N'2032-05-01T00:00:00.000', N'2032-06-01T00:00:00.000', N'2032-07-01T00:00:00.000', N'2032-08-01T00:00:00.000')
 GO
-/****** Object:  PartitionScheme [UPS_Test_Monthly]    Script Date: 11/18/2019 10:50:45 PM ******/
-CREATE PARTITION SCHEME [UPS_Test_Monthly] AS PARTITION [UPF_Test_Monthly] TO ([FG_Test_Monthly_Y00M00], [FG_Test_Monthly_Y01M08], [FG_Test_Monthly_Y01M09], [FG_Test_Monthly_Y01M10], [FG_Test_Monthly_Y01M11], [FG_Test_Monthly_Y01M12], [FG_Test_Monthly_Y02M01], [FG_Test_Monthly_Y02M02], [FG_Test_Monthly_Y02M03], [FG_Test_Monthly_Y02M04], [FG_Test_Monthly_Y02M05], [FG_Test_Monthly_Y02M06], [FG_Test_Monthly_Y02M07], [FG_Test_Monthly_Y02M08], [FG_Test_Monthly_Y02M09], [FG_Test_Monthly_Y02M10], [FG_Test_Monthly_Y02M11], [FG_Test_Monthly_Y02M12], [FG_Test_Monthly_Y01M01], [FG_Test_Monthly_Y01M02], [FG_Test_Monthly_Y01M03], [FG_Test_Monthly_Y01M04], [FG_Test_Monthly_Y01M05], [FG_Test_Monthly_Y01M06], [FG_Test_Monthly_Y01M07])
+/****** Object:  PartitionScheme [UPS_Test_Monthly]    Script Date: 11/19/2019 10:47:45 AM ******/
+CREATE PARTITION SCHEME [UPS_Test_Monthly] AS PARTITION [UPF_Test_Monthly] TO ([FG_Test_Monthly_Y00M00], [FG_Test_Monthly_Y02M09], [FG_Test_Monthly_Y02M10], [FG_Test_Monthly_Y02M11], [FG_Test_Monthly_Y02M12], [FG_Test_Monthly_Y01M01], [FG_Test_Monthly_Y01M02], [FG_Test_Monthly_Y01M03], [FG_Test_Monthly_Y01M04], [FG_Test_Monthly_Y01M05], [FG_Test_Monthly_Y01M06], [FG_Test_Monthly_Y01M07], [FG_Test_Monthly_Y01M08], [FG_Test_Monthly_Y01M09], [FG_Test_Monthly_Y01M10], [FG_Test_Monthly_Y01M11], [FG_Test_Monthly_Y01M12], [FG_Test_Monthly_Y02M01], [FG_Test_Monthly_Y02M02], [FG_Test_Monthly_Y02M03], [FG_Test_Monthly_Y02M04], [FG_Test_Monthly_Y02M05], [FG_Test_Monthly_Y02M06], [FG_Test_Monthly_Y02M07], [FG_Test_Monthly_Y02M08])
 GO
-/****** Object:  UserDefinedFunction [dbo].[SVF_GetMonthlyPartitionNo]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[SVF_GetMonthlyPartitionNo]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -234,7 +234,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsInfo]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsInfo]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -570,7 +570,7 @@ where
 	)
 )
 GO
-/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsStorageInfo]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[iTVF_TablesPartitionsStorageInfo]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -596,7 +596,7 @@ from
 AS
 RETURN 
 (
-with T
+with TPartitions
 as
 (
 	SELECT
@@ -711,16 +711,11 @@ as
 			so.[name] = @TableName
 		)
 )
+, T 
+as
+(
 	select
-		--a.*
-		--, 
-		  a.TableName
-		, a.PartitionFunction
-		, a.PartitionScheme
-		, a.PartitionNumber
-		, a.FileGroupName
-		, a.BoundaryType
-		, a.BoundaryValue
+		a.*
 		, cast(a.BoundaryValue as date)			as LeftValue
 		, cast
 			(
@@ -732,19 +727,45 @@ as
 						)
 				as date
 			)									as RightValue
-		, a.StorageRows	
 	from
-		T a
-	--ORDER BY
-	--	SchemeName
-	--	, TableName
-	--	, [IndexID]
-	--	, [PartitionFunction]
-	--	, [PartitionNumber]
+		TPartitions a
+)
+select
+	a.SchemeName
+	, a.TableName
+	, a.PartitionFunction
+	, a.PartitionScheme
+	, a.PartitionNumber
+	, a.FileGroupName
+	, a.BoundaryType
+	, a.BoundaryValue
+	, a.LeftValue
+	, a.RightValue
+	--, min(a.LeftValue) over()				as MinLeftValue
+	--, max(a.LeftValue) over()				as MaxLeftValue
+	--, min(a.RightValue) over()			as MinRightValue
+	--, max(a.RightValue) over()			as MaxRightValue
+	, min(a.BoundaryValue) over()			as MinBoundaryValue
+	, max(a.BoundaryValue) over()			as MaxBoundaryValue
+	, count(a.BoundaryValue) over()			as CountBoundaryValue
+	, a.StorageRows
+	, a.IndexID
+	, a.IndexStructure
+	, a.InRowReservedInGB
+	, a.LobReservedInGB
+from
+	T a
+
+--ORDER BY
+--	SchemeName
+--	, TableName
+--	, [IndexID]
+--	, [PartitionFunction]
+--	, [PartitionNumber]
 
 )
 GO
-/****** Object:  Table [dbo].[Test_Monthly]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  Table [dbo].[Test_Monthly]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -753,19 +774,19 @@ CREATE TABLE [dbo].[Test_Monthly](
 	[DataDate] [date] NULL
 ) ON [UPS_Test_Monthly]([DataDate])
 GO
-/****** Object:  Index [c_a_Dd]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  Index [c_a_Dd]    Script Date: 11/19/2019 10:47:45 AM ******/
 CREATE CLUSTERED INDEX [c_a_Dd] ON [dbo].[Test_Monthly]
 (
 	[DataDate] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [UPS_Test_Monthly]([DataDate])
 GO
-/****** Object:  Index [nc_a_Dd]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  Index [nc_a_Dd]    Script Date: 11/19/2019 10:47:45 AM ******/
 CREATE NONCLUSTERED INDEX [nc_a_Dd] ON [dbo].[Test_Monthly]
 (
 	[DataDate] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [UPS_Test_Monthly]([DataDate])
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_CreateSampleTable]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_CreateSampleTable]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -884,7 +905,7 @@ ON
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_GenerateSampleMonthlyData]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_GenerateSampleMonthlyData]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -967,7 +988,7 @@ order by
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_MonthlyTruncateMergeNextUsedSplitPartitionsOnce]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_MonthlyTruncateMergeNextUsedSplitPartitionsOnce]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1049,14 +1070,14 @@ where
 	a.PartitionNumber = 2
 
 select
-	  @MergeDate					as MergeDateOnHead
-	, @SplitDate					as SplitDateOnTail
+	  @MergeDate						as MergeDateOnHead
+	, @SplitDate						as SplitDateOnTail
 	, DATEDIFF
 		(
 			MONTH
 			, @MergeDate
 			, @SplitDate
-		)							as Months
+		)								as Months
 	, @PartitionNo2FileGroupName		as Partition2FileGroupName
 
 --=====================================================================
@@ -1145,7 +1166,7 @@ end
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_OnDemandMonthlyTruncateMergeNextUsedSplitPartitions]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_OnDemandMonthlyTruncateMergeNextUsedSplitPartitions]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1160,7 +1181,7 @@ as
 --重建分区表
 --exec zsp_CreateSampleTable
 --生成测试数据
---exec zsp_GenerateSampleMonthlyData '2052-6-2', 30
+--exec zsp_GenerateSampleMonthlyData '2030-10-2', 30
 --滚动1次分区之前
 --exec [zsp_TablesPartitionsInfoQuery]
 --滚动1次分区
@@ -1229,7 +1250,7 @@ begin
 			)
 		if (@rows = 0)
 		begin
-			exec zsp_MonthlyTruncateMergeNextUsedSplitPartitionsOnce @TableName
+			exec [zsp_MonthlyTruncateMergeNextUsedSplitPartitionsOnce] @TableName
 			--select 1/0
 			set @ += 1
 		end
@@ -1244,7 +1265,7 @@ end
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_SampleMonthlyDataPartitionsInfoQuery]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_SampleMonthlyDataPartitionsInfoQuery]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1313,7 +1334,7 @@ ORDER BY
 	
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsInfoQuery]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsInfoQuery]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1336,7 +1357,7 @@ order by
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsStorage]    Script Date: 11/18/2019 10:50:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[zsp_TablesPartitionsStorage]    Script Date: 11/19/2019 10:47:45 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1350,9 +1371,8 @@ SELECT
 FROM
 	iTVF_TablesPartitionsStorageInfo(null) a
 ORDER BY
-	--  a.SchemeName
-	--, 
-	a.TableName
+	 a.SchemeName
+	, a.TableName
 	--, a.[IndexID]
 	, a.[PartitionFunction]
 	, a.[PartitionNumber]
