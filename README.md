@@ -17,6 +17,7 @@ exec [zsp_OnDemandMonthlyTruncateMergeNextUsedSplitPartitions] 'Test_Monthly', '
 exec zsp_SampleMonthlyDataPartitionsInfoQuery
 --获取日期所在分区编号
 --select dbo.SVF_GetMonthlyPartitionNo('Test_Monthly', '2026-01-01')
-
+--获取日期所在按月独占分区编号 (-1: 该日期无该月独占分区, 0: 该日期已滚动过期, N: 该日期的独占按月分区编号)
+select dbo.[SVF_GetMonthlyExclusivePartitionNo]('Test_Monthly', '2010-01-01')
 
 ```
