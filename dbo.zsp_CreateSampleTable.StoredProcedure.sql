@@ -1,6 +1,5 @@
 USE [MonthlyPartitionsTest]
 GO
-/****** Object:  StoredProcedure [dbo].[zsp_CreateSampleTable]    Script Date: 11/22/2019 2:10:45 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,19 +9,17 @@ as
 begin
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Test_Monthly]') AND type in (N'U'))
 BEGIN
-	drop Table Test_Monthly
+	drop Table if exists Test_Monthly
 end
 
 IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = N'UPS_Test_Monthly')
 begin
-	drop PARTITION
-			SCHEME UPS_Test_Monthly
+	drop PARTITION SCHEME /* if exists */ [UPS_Test_Monthly]
 end
 
 IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = N'UPF_Test_Monthly')
 begin
-	drop PARTITION FUNCTION
-					[UPF_Test_Monthly]
+	drop PARTITION FUNCTION  /* if exists */ [UPF_Test_Monthly]
 end
 
 CREATE PARTITION FUNCTION [UPF_Test_Monthly](date)
