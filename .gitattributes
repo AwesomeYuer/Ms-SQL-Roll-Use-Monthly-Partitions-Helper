@@ -1,4 +1,5 @@
 *.sql linguist-language=TSQL
 *.sql diff merge text
-# *.strings diff=utf16
+*.strings diff=utf16
 # *.sql text working-tree-encoding=UTF-16 eol=CRLF
+*.sql text working-tree-encoding=UTF-16LE eol=CRLF

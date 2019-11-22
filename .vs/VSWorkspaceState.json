@@ -2,6 +2,6 @@
   "ExpandedNodes": [
     ""
   ],
-  "SelectedNode": "\\DataBase.All.Objects.sql",
+  "SelectedNode": "\\dbo.zsp_MonthlyRollForwardsPartitionsOnDemand.StoredProcedure.sql",
   "PreviewInSolutionExplorer": false
 }
